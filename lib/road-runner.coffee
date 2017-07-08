@@ -8,12 +8,12 @@ module.exports = RoadRunner =
     @subscriptions = new CompositeDisposable()
 
     # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'road-runner:toggle': => @toggle()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'road-runner:run-line': => @runLine()
 
   deactivate: ->
     @subscriptions.dispose()
 
   serialize: ->
 
-  toggle: ->
+  runLine: ->
     atom.notifications.addSuccess "it's ALIVE"

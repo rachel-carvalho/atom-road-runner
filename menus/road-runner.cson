@@ -6,8 +6,8 @@
       'label': 'road-runner'
       'submenu': [
         {
-          'label': 'Toggle'
-          'command': 'road-runner:toggle'
+          'label': 'Run line'
+          'command': 'road-runner:run-line'
         }
       ]
     ]
