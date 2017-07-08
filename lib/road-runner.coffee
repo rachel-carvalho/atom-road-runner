@@ -8,9 +8,7 @@ module.exports = RoadRunner =
   activate: (state) ->
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable()
-
-    # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'road-runner:run-line': => @runLine()
+    @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-line': => @runLine())
 
   deactivate: ->
     @subscriptions.dispose()
@@ -18,12 +16,14 @@ module.exports = RoadRunner =
   serialize: ->
 
   runLine: ->
-    return unless @editor()
-    template = 'rspec {file}:{line}'
-    child_process.execSync "#{@runner()} \"#{@command(template)}\""
+    @run 'rspec {file}:{line}'
 
   editor: ->
     atom.workspace.getActiveTextEditor()
+
+  run: (template) ->
+    return unless @editor()
+    child_process.execSync "#{@runner()} \"#{@command(template)}\""
 
   runner: ->
     path.join atom.packages.resolvePackagePath('road-runner'), 'bin', 'os_x_terminal'
