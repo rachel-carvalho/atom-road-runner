@@ -1,0 +1,18 @@
+{
+  "name": "road-runner",
+  "main": "./lib/road-runner",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": "road-runner:toggle"
+  },
+  "repository": "https://github.com/atom/road-runner",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}

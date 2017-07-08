@@ -1,0 +1,22 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Toggle road-runner'
+      'command': 'road-runner:toggle'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'road-runner'
+      'submenu': [
+        {
+          'label': 'Toggle'
+          'command': 'road-runner:toggle'
+        }
+      ]
+    ]
+  }
+]
