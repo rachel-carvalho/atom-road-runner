@@ -1,0 +1,26 @@
+#!/usr/bin/osascript
+-- Copyright (c) 2014 thoughtbot, inc.
+-- from https://github.com/thoughtbot/vim-rspec/
+on run argv
+  tell application "iTerm"
+    if (count of terminals) = 0 then
+      set _terminal to (make new terminal)
+    else
+      set _terminal to current terminal
+    end if
+
+    activate
+
+    tell _terminal
+      tell the current session
+        write text (item 1 of argv)
+      end tell
+    end tell
+  end tell
+
+  delay 0.02
+
+  tell application "Atom"
+    activate
+  end tell
+end run
