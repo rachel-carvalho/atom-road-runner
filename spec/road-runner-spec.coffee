@@ -10,12 +10,18 @@ describe 'RoadRunner', ->
   describe 'road-runner:run-line', ->
     it 'shows a notification', ->
       spyOn(atom.notifications, 'addSuccess')
+      spyOn(atom.project, 'relativize').andReturn 'path.coffee'
+
+      editor =
+        getPath: -> '/this/is/a/full/path.coffee'
+        getCursorBufferPosition: -> row: 9
+
+      spyOn(atom.workspace, 'getActiveTextEditor').andReturn editor
 
       # This is an activation event, triggering it will cause the package to be activated.
       atom.commands.dispatch workspaceElement, 'road-runner:run-line'
 
-      waitsForPromise ->
-        activationPromise
+      waitsForPromise -> activationPromise
 
       runs ->
-        expect(atom.notifications.addSuccess).toHaveBeenCalledWith("it's ALIVE")
+        expect(atom.notifications.addSuccess).toHaveBeenCalledWith("it's ALIVE: path.coffee:10")

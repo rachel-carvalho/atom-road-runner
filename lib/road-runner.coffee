@@ -16,4 +16,7 @@ module.exports = RoadRunner =
   serialize: ->
 
   runLine: ->
-    atom.notifications.addSuccess "it's ALIVE"
+    editor = atom.workspace.getActiveTextEditor()
+    relative_path = atom.project.relativize(editor.getPath())
+    line = editor.getCursorBufferPosition().row + 1
+    atom.notifications.addSuccess "it's ALIVE: #{relative_path}:#{line}"
