@@ -1,5 +1,7 @@
 RoadRunner = require '../lib/road-runner'
 
+context = describe
+
 describe 'RoadRunner', ->
   [workspaceElement, activationPromise] = []
 
@@ -8,14 +10,15 @@ describe 'RoadRunner', ->
     activationPromise = atom.packages.activatePackage('road-runner')
 
   describe 'road-runner:run-line', ->
-    it 'shows a notification', ->
+    editor =
+      getPath: -> '/this/is/a/full/path.coffee'
+      getCursorBufferPosition: -> row: 9
+
+    beforeEach ->
       spyOn(atom.notifications, 'addSuccess')
       spyOn(atom.project, 'relativize').andReturn 'path.coffee'
 
-      editor =
-        getPath: -> '/this/is/a/full/path.coffee'
-        getCursorBufferPosition: -> row: 9
-
+    it 'shows a notification', ->
       spyOn(atom.workspace, 'getActiveTextEditor').andReturn editor
 
       # This is an activation event, triggering it will cause the package to be activated.
@@ -25,3 +28,14 @@ describe 'RoadRunner', ->
 
       runs ->
         expect(atom.notifications.addSuccess).toHaveBeenCalledWith("it's ALIVE: path.coffee:10")
+
+    context 'when editor is not present', ->
+      it 'does nothing', ->
+        spyOn(atom.workspace, 'getActiveTextEditor').andReturn null
+
+        atom.commands.dispatch workspaceElement, 'road-runner:run-line'
+
+        waitsForPromise -> activationPromise
+
+        runs ->
+          expect(atom.notifications.addSuccess).not.toHaveBeenCalled()
