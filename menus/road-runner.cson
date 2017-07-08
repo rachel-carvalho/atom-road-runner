@@ -1,15 +1,17 @@
 # See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
-'menu': [
-  {
-    'label': 'Packages'
-    'submenu': [
-      'label': 'road-runner'
-      'submenu': [
-        {
-          'label': 'Run line'
-          'command': 'road-runner:run-line'
-        }
-      ]
+menu: [
+  label: 'Packages'
+  submenu: [
+    label: 'Road Runner'
+    submenu: [
+      {
+        label: 'Run line'
+        command: 'road-runner:run-line'
+      }
+      {
+        label: 'Run file'
+        command: 'road-runner:run-file'
+      }
     ]
-  }
+  ]
 ]

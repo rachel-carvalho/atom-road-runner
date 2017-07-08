@@ -9,6 +9,7 @@ module.exports = RoadRunner =
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable()
     @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-line': => @runLine())
+    @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-file': => @runFile())
 
   deactivate: ->
     @subscriptions.dispose()
@@ -17,6 +18,9 @@ module.exports = RoadRunner =
 
   runLine: ->
     @run 'rspec {file}:{line}'
+
+  runFile: ->
+    @run 'atom --test {file}'
 
   editor: ->
     atom.workspace.getActiveTextEditor()

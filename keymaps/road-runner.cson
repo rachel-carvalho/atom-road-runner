@@ -8,4 +8,5 @@
 # For more detailed documentation see
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-workspace':
-  'ctrl-alt-o': 'road-runner:toggle'
+  'ctrl-alt-l': 'road-runner:run-line'
+  'ctrl-alt-p': 'road-runner:run-file'
