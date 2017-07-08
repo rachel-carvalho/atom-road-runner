@@ -1,4 +1,6 @@
 {CompositeDisposable} = require 'atom'
+child_process = require 'child_process'
+path = require 'path'
 
 module.exports = RoadRunner =
   subscriptions: null
@@ -17,12 +19,21 @@ module.exports = RoadRunner =
 
   runLine: ->
     return unless @editor()
-    atom.notifications.addSuccess "it's ALIVE: #{@path()}:#{@line()}"
+    template = 'rspec {file}:{line}'
+    child_process.execSync "#{@runner()} \"#{@command(template)}\""
 
   editor: ->
     atom.workspace.getActiveTextEditor()
 
-  path: ->
+  runner: ->
+    path.join atom.packages.resolvePackagePath('road-runner'), 'bin', 'os_x_terminal'
+
+  command: (template) ->
+    template
+      .replace /\{line\}/g, @line()
+      .replace /\{file\}/g, @file()
+
+  file: ->
     atom.project.relativize(@editor().getPath())
 
   line: ->

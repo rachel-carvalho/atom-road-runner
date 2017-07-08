@@ -1,3 +1,4 @@
+child_process = require 'child_process'
 RoadRunner = require '../lib/road-runner'
 
 context = describe
@@ -11,31 +12,26 @@ describe 'RoadRunner', ->
 
   describe 'road-runner:run-line', ->
     editor =
-      getPath: -> '/this/is/a/full/path.coffee'
+      getPath: -> '/this/is/a/full/path.rb'
       getCursorBufferPosition: -> row: 9
 
     beforeEach ->
-      spyOn(atom.notifications, 'addSuccess')
-      spyOn(atom.project, 'relativize').andReturn 'path.coffee'
-
-    it 'shows a notification', ->
+      spyOn(child_process, 'execSync')
+      spyOn(atom.project, 'relativize').andReturn 'path.rb'
       spyOn(atom.workspace, 'getActiveTextEditor').andReturn editor
+      atom.packages.resolvePackagePath.andReturn '/.atom/road-runner/'
 
-      # This is an activation event, triggering it will cause the package to be activated.
+    it 'runs command in terminal', ->
       atom.commands.dispatch workspaceElement, 'road-runner:run-line'
-
       waitsForPromise -> activationPromise
-
       runs ->
-        expect(atom.notifications.addSuccess).toHaveBeenCalledWith("it's ALIVE: path.coffee:10")
+        expect(child_process.execSync).toHaveBeenCalledWith('/.atom/road-runner/bin/os_x_terminal "rspec path.rb:10"')
 
     context 'when editor is not present', ->
+      beforeEach -> atom.workspace.getActiveTextEditor.andReturn null
+
       it 'does nothing', ->
-        spyOn(atom.workspace, 'getActiveTextEditor').andReturn null
-
         atom.commands.dispatch workspaceElement, 'road-runner:run-line'
-
         waitsForPromise -> activationPromise
-
         runs ->
-          expect(atom.notifications.addSuccess).not.toHaveBeenCalled()
+          expect(child_process.execSync).not.toHaveBeenCalled()
