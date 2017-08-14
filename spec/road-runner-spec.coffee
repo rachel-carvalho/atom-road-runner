@@ -64,8 +64,8 @@ describe 'RoadRunner', ->
 
   describe 'road-runner:run-command', ->
     editor =
-      getPath: -> '/this/is/a/full/path.coffee'
-      getCursorBufferPosition: -> row: 9
+      getPath: -> ''
+      getCursorBufferPosition: -> row: 0
 
     beforeEach ->
       spyOn(child_process, 'execSync')
@@ -83,6 +83,32 @@ describe 'RoadRunner', ->
 
       it 'does nothing', ->
         atom.commands.dispatch workspaceElement, 'road-runner:run-file'
+        waitsForPromise -> activationPromise
+        runs ->
+          expect(child_process.execSync).not.toHaveBeenCalled()
+
+  describe 'road-runner:run-command', ->
+    editor =
+      getPath: -> ''
+      getCursorBufferPosition: -> row: 0
+
+    beforeEach ->
+      spyOn(child_process, 'execSync')
+      spyOn(atom.workspace, 'getActiveTextEditor').andReturn editor
+      atom.packages.resolvePackagePath.andReturn '/.atom/road-runner/'
+
+    it 'runs command in terminal', ->
+      atom.commands.dispatch workspaceElement, 'road-runner:run-command'
+      atom.commands.dispatch workspaceElement, 'road-runner:repeat-last'
+      waitsForPromise -> activationPromise
+      runs ->
+        expect(child_process.execSync.calls.length).toEqual 2
+        args = child_process.execSync.calls.map (c) -> c.args[0]
+        expect(args).toEqual ['/.atom/road-runner/bin/os_x_terminal "npm test"', '/.atom/road-runner/bin/os_x_terminal "npm test"']
+
+    context "when there's no previous command", ->
+      it 'does nothing', ->
+        atom.commands.dispatch workspaceElement, 'road-runner:repeat-last'
         waitsForPromise -> activationPromise
         runs ->
           expect(child_process.execSync).not.toHaveBeenCalled()
