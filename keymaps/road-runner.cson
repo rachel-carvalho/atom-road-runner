@@ -9,4 +9,5 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 'atom-workspace':
   'ctrl-alt-l': 'road-runner:run-line'
-  'ctrl-alt-p': 'road-runner:run-file'
+  'ctrl-alt-;': 'road-runner:run-file'
+  "ctrl-alt-'": 'road-runner:run-command'

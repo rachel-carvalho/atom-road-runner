@@ -61,3 +61,28 @@ describe 'RoadRunner', ->
         waitsForPromise -> activationPromise
         runs ->
           expect(child_process.execSync).not.toHaveBeenCalled()
+
+  describe 'road-runner:run-command', ->
+    editor =
+      getPath: -> '/this/is/a/full/path.coffee'
+      getCursorBufferPosition: -> row: 9
+
+    beforeEach ->
+      spyOn(child_process, 'execSync')
+      spyOn(atom.workspace, 'getActiveTextEditor').andReturn editor
+      atom.packages.resolvePackagePath.andReturn '/.atom/road-runner/'
+
+    it 'runs command in terminal', ->
+      atom.commands.dispatch workspaceElement, 'road-runner:run-command'
+      waitsForPromise -> activationPromise
+      runs ->
+        expect(child_process.execSync).toHaveBeenCalledWith('/.atom/road-runner/bin/os_x_terminal "npm test"')
+
+    context 'when editor is not present', ->
+      beforeEach -> atom.workspace.getActiveTextEditor.andReturn null
+
+      it 'does nothing', ->
+        atom.commands.dispatch workspaceElement, 'road-runner:run-file'
+        waitsForPromise -> activationPromise
+        runs ->
+          expect(child_process.execSync).not.toHaveBeenCalled()

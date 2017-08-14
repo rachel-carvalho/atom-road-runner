@@ -10,6 +10,7 @@ module.exports = RoadRunner =
     @subscriptions = new CompositeDisposable()
     @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-line': => @runLine())
     @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-file': => @runFile())
+    @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-command': => @runCommand())
 
   deactivate: ->
     @subscriptions.dispose()
@@ -21,6 +22,9 @@ module.exports = RoadRunner =
 
   runFile: ->
     @run 'atom --test {file}'
+
+  runCommand: ->
+    @run 'npm test'
 
   editor: ->
     atom.workspace.getActiveTextEditor()
