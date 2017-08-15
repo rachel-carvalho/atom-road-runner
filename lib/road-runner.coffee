@@ -1,6 +1,6 @@
 {CompositeDisposable} = require 'atom'
-child_process = require 'child_process'
 path = require 'path'
+Runner = require './runner'
 
 module.exports = RoadRunner =
   subscriptions: null
@@ -8,6 +8,7 @@ module.exports = RoadRunner =
   activate: (state) ->
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @history = []
+    @runner = new Runner()
     @subscriptions = new CompositeDisposable()
     @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-line': => @runLine())
     @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-file': => @runFile())
@@ -36,20 +37,15 @@ module.exports = RoadRunner =
 
   run: ({template, last_command}) ->
     return unless @editor()
-    full_command = @full_command(template, last_command)
-    child_process.execSync full_command if full_command
+    @runner.run @command(template, last_command)
 
-  full_command: (template, last_command) ->
-    @history.unshift "#{@runner()} \"#{@command(template)}\"" unless last_command
+  command: (template, last_command) ->
+    if !last_command
+      @history.unshift(template
+                        .replace /\{line\}/g, @line()
+                        .replace /\{file\}/g, @file())
+
     @history[0]
-
-  runner: ->
-    path.join atom.packages.resolvePackagePath('road-runner'), 'bin', 'os_x_terminal'
-
-  command: (template) ->
-    template
-      .replace /\{line\}/g, @line()
-      .replace /\{file\}/g, @file()
 
   file: ->
     atom.project.relativize(@editor().getPath())
