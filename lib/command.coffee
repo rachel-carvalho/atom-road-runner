@@ -19,9 +19,6 @@ module.exports = class Command
     return 'atom --test {file}' if @type == 'file'
     return 'rspec {file}:{line}' if @type == 'line'
 
-  empty: ->
-    !@toString()
-
   render: ->
     @template().replace(/\{line\}/g, @line()).replace /\{file\}/g, @file()
 

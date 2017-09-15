@@ -44,18 +44,3 @@ describe 'Command', ->
       it 'renders an empty string', ->
         atom.workspace.getActiveTextEditor.andReturn null
         expect(new Command(type: 'all').toString()).toEqual ''
-
-  describe '.empty', ->
-    beforeEach ->
-      editor =
-        getPath: -> '/this/is/a/full/path.coffee'
-        getCursorBufferPosition: -> row: 9
-      spyOn(atom.project, 'relativize').andReturn 'path.coffee'
-      spyOn(atom.workspace, 'getActiveTextEditor').andReturn editor
-
-    it 'is false when editor is present', ->
-      expect(new Command(type: 'all').empty()).toEqual false
-
-    it 'is true when editor is not present', ->
-      atom.workspace.getActiveTextEditor.andReturn null
-      expect(new Command(type: 'all').empty()).toEqual true
