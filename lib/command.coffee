@@ -15,9 +15,13 @@ module.exports = class Command
     @rendered || ''
 
   template: ->
-    return 'npm test' if @type == 'all'
-    return 'atom --test {file}' if @type == 'file'
-    return 'rspec {file}:{line}' if @type == 'line'
+    atom.config.get(@template_key(), scope: @current_scope()) || ''
+
+  template_key: ->
+    "road-runner.commands.#{@type}"
+
+  current_scope: ->
+    @editor().getRootScopeDescriptor()
 
   render: ->
     @template().replace(/\{line\}/g, @line()).replace /\{file\}/g, @file()
