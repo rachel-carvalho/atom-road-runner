@@ -3,7 +3,7 @@ path = require 'path'
 
 module.exports = class Runner
   run: (command) ->
-    child_process.execSync @finalCommand(command) if command
+    child_process.execSync @finalCommand(command) if command?.toString()
 
   finalCommand: (command) ->
     "#{@bin()} \"#{command}\""
