@@ -6,9 +6,7 @@ module.exports = class Command
 
     return unless @editor()
 
-    @rendered = @render 'npm test' if @type == 'all'
-    @rendered = @render 'atom --test {file}' if @type == 'file'
-    @rendered = @render 'rspec {file}:{line}' if @type == 'line'
+    @rendered = @render()
 
   unsupported: ->
     @TYPES.indexOf(@type) < 0
@@ -16,11 +14,16 @@ module.exports = class Command
   toString: ->
     @rendered || ''
 
+  template: ->
+    return 'npm test' if @type == 'all'
+    return 'atom --test {file}' if @type == 'file'
+    return 'rspec {file}:{line}' if @type == 'line'
+
   empty: ->
     !@toString()
 
-  render: (template) ->
-    template.replace(/\{line\}/g, @line()).replace /\{file\}/g, @file()
+  render: ->
+    @template().replace(/\{line\}/g, @line()).replace /\{file\}/g, @file()
 
   file: ->
     atom.project.relativize @editor().getPath()
