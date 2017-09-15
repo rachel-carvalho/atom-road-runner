@@ -11,4 +11,4 @@
   'ctrl-alt-z': 'road-runner:repeat-last'
   'ctrl-alt-l': 'road-runner:run-line'
   'ctrl-alt-;': 'road-runner:run-file'
-  "ctrl-alt-'": 'road-runner:run-command'
+  "ctrl-alt-'": 'road-runner:run-all'

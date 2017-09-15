@@ -40,4 +40,4 @@ module.exports = RoadRunner =
     return unless @editor()
 
     @history.unshift new Command(type: type) if type != 'last'
-    @runner.run @history[0].toString() if @history.length
+    @runner.run @history[0]

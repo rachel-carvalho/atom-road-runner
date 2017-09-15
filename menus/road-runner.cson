@@ -13,8 +13,8 @@ menu: [
         command: 'road-runner:run-file'
       }
       {
-        label: 'Run command'
-        command: 'road-runner:run-command'
+        label: 'Run all'
+        command: 'road-runner:run-all'
       }
     ]
   ]

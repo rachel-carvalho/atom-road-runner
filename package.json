@@ -6,7 +6,7 @@
   "keywords": [
   ],
   "activationCommands": {
-    "atom-workspace": ["road-runner:run-line", "road-runner:run-file", "road-runner:run-command", "road-runner:repeat-last"]
+    "atom-workspace": ["road-runner:run-line", "road-runner:run-file", "road-runner:run-all", "road-runner:repeat-last"]
   },
   "repository": "https://github.com/rachel-carvalho/atom-road-runner",
   "license": "MIT",

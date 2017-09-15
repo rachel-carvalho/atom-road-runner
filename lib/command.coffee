@@ -8,7 +8,7 @@ module.exports = class Command
 
     @rendered = @render 'npm test' if @type == 'all'
     @rendered = @render 'atom --test {file}' if @type == 'file'
-    @rendered = @render 'zeus rspec {file}:{line}' if @type == 'line'
+    @rendered = @render 'rspec {file}:{line}' if @type == 'line'
 
   unsupported: ->
     @TYPES.indexOf(@type) < 0
