@@ -4,7 +4,7 @@ Runner = require '../lib/runner'
 context = describe
 
 describe 'Runner', ->
-  describe 'run', ->
+  describe '.run', ->
     beforeEach ->
       atom.packages.resolvePackagePath.andReturn '/road-runner/'
       spyOn(child_process, 'execSync')
