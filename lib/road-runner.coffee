@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 path = require 'path'
 Runner = require './runner'
+Command = require './command'
 
 module.exports = RoadRunner =
   subscriptions: null
@@ -12,7 +13,7 @@ module.exports = RoadRunner =
     @subscriptions = new CompositeDisposable()
     @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-line': => @runLine())
     @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-file': => @runFile())
-    @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-command': => @runCommand())
+    @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:run-all': => @runAll())
     @subscriptions.add atom.commands.add('atom-workspace', 'road-runner:repeat-last': => @repeatLast())
 
   deactivate: ->
@@ -21,34 +22,22 @@ module.exports = RoadRunner =
   serialize: ->
 
   runLine: ->
-    @run template: 'rspec {file}:{line}'
+    @run type: 'line'
 
   runFile: ->
-    @run template: 'atom --test {file}'
+    @run type: 'file'
 
-  runCommand: ->
-    @run template: 'npm test'
+  runAll: ->
+    @run type: 'all'
 
   repeatLast: ->
-    @run last_command: true
+    @run type: 'last'
 
   editor: ->
     atom.workspace.getActiveTextEditor()
 
-  run: ({template, last_command}) ->
+  run: ({type}) ->
     return unless @editor()
-    @runner.run @command(template, last_command)
 
-  command: (template, last_command) ->
-    if !last_command
-      @history.unshift(template
-                        .replace /\{line\}/g, @line()
-                        .replace /\{file\}/g, @file())
-
-    @history[0]
-
-  file: ->
-    atom.project.relativize(@editor().getPath())
-
-  line: ->
-    @editor().getCursorBufferPosition().row + 1
+    @history.unshift new Command(type: type) if type != 'last'
+    @runner.run @history[0].toString() if @history.length
