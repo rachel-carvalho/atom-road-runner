@@ -1,4 +1,4 @@
-# Road Runner
+# Road Runner (mac only!)
 
 Run any context-aware command from Atom in Terminal.app using a key shortcut.
 
@@ -31,6 +31,8 @@ This package was inspired by @moxley's [ruby-test](https://github.com/moxley/ato
 - `CONTROL` + `OPTION` + `;`: `road-runner:run-file` runs your command by passing the current file path relative to the project root without the line number. Example: `rspec spec/models/user_spec.rb`
 
 - `CONTROL` + `OPTION` + `L`: `road-runner:run-line` runs your command by passing the current file path relative to the project root + the line number. Example: `rspec spec/models/user_spec.rb:8`
+
+- `CONTROL` + `OPTION` + `z`: `road-runner:repeat-last` repeats the last command issued with the previous parameters, even if the current file doesn't match the scope.
 
 ## Planned features
 
