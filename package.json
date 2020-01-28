@@ -2,7 +2,7 @@
   "name": "road-runner",
   "main": "./lib/road-runner",
   "version": "0.0.0",
-  "description": "Run any context-aware command in Terminal.app or iTerm",
+  "description": "Run any context-aware command in Terminal.app",
   "keywords": [
   ],
   "activationCommands": {
