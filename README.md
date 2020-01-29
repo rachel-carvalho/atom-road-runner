@@ -2,6 +2,8 @@
 
 Run any context-aware command from Atom in Terminal.app using a key shortcut.
 
+![Split screen](img/split-screen.gif)
+
 To use it, open your Atom configuration file and add commands for each source type.
 
 These are configuration examples for Rails with RSpec and Node with Mocha:
